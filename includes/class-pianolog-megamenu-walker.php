@@ -38,7 +38,6 @@ if ( ! class_exists( 'Pianolog_Megamenu_Walker' ) && class_exists( 'Walker_Nav_M
 					 * @param stdClass|array   $args            Menu args.
 					 */
 					$specified_slugs = apply_filters( 'pianolog_megamenu_slugs', $specified_slugs, $item, $args );
-					$columns_interval = 12 / count( $specified_slugs );
 
 
 					$children = array();
@@ -53,9 +52,22 @@ if ( ! class_exists( 'Pianolog_Megamenu_Walker' ) && class_exists( 'Walker_Nav_M
 							)
 						);
 						if ( ! is_wp_error( $maybe_terms ) && ! empty( $maybe_terms ) ) {
-							// Keep top-level categories only.
+							// Build map by slug to preserve the order provided in $specified_slugs.
+							$by_slug = array();
 							foreach ( $maybe_terms as $t ) {
 								if ( (int) $t->parent === 0 ) {
+									$by_slug[ $t->slug ] = $t;
+								}
+							}
+							// Push terms in the order of $specified_slugs.
+							foreach ( $specified_slugs as $slug ) {
+								if ( isset( $by_slug[ $slug ] ) ) {
+									$children[] = $by_slug[ $slug ];
+								}
+							}
+							// Append any remaining top-level terms not explicitly ordered.
+							foreach ( $maybe_terms as $t ) {
+								if ( (int) $t->parent === 0 && ! in_array( $t, $children, true ) ) {
 									$children[] = $t;
 								}
 							}
@@ -78,7 +90,9 @@ if ( ! class_exists( 'Pianolog_Megamenu_Walker' ) && class_exists( 'Walker_Nav_M
 					}
 
 					if ( ! is_wp_error( $children ) && ! empty( $children ) ) {
-					$output .= '<div class="mega-menu"><div class="mega-panel"><div class="container"><div class="row">';
+					// Compute column span based on final count.
+					$columns_interval = max( 1, intval( 12 / max( 1, count( $i = $children ) ) ) );
+					$output          .= '<div class="mega-menu"><div class="mega-panel"><div class="container"><div class="row">';
 					foreach ( $children as $term ) {
 						$columns_interval_class = 'col-' . $columns_interval;
 						

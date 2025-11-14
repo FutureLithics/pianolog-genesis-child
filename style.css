@@ -377,9 +377,9 @@ li {
 .menu.menu--primary > li.menu-item-has-mega > .mega-menu {
   position: absolute;
   top: calc(100% - 8px);
-  left: auto !important;
+  left: 0 !important;
   right: 0 !important;
-  max-width: 960px; 
+  max-width: none;
   display: none;
   z-index: 1000;
   background: transparent; /* container is transparent */
@@ -426,7 +426,26 @@ li {
   transform: none;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
-  text-wrap: nowrap;
+  /* Layout multiple category groups without overlap */
+  display: flex;
+  flex-wrap: wrap; /* allow panel to grow vertically instead of scrolling horizontally */
+  gap: 24px;
+  align-items: flex-start;
+  align-content: flex-start; /* allow multiple rows to expand height */
+  white-space: normal;
+}
+/* Ensure internal grid (row/col-*) behavior is controlled inside mega panel */
+.mega-menu .mega-panel .row {
+  display: flex;
+  flex-wrap: wrap; /* wrap to new lines so panel height expands to fit */
+  gap: 24px;
+}
+/* Let columns size to content without fixed percentage widths */
+.mega-menu .mega-panel .row > [class^="col-"],
+.mega-menu .mega-panel .row > [class*=" col-"],
+.mega-menu .mega-panel .row > .col {
+  width: auto !important;
+  flex: 0 0 auto;
 }
 
 /* Megamenu persistence */
@@ -457,6 +476,14 @@ li {
 
 /* Megamenu adjustable width and right-aligned to parent li */
 .menu.menu--primary > li { position: relative !important; }
+/* Anchor mega panel to its parent <li> but allow horizontal growth */
+.menu.menu--primary > li.menu-item-has-mega > .mega-menu {
+  left: 50% !important;
+  right: auto !important;
+  width: max-content;
+  white-space: normal;
+  transform: translateX(-50%);
+}
 
 /* Header search */
 .header-search { display: flex; align-items: center; }
