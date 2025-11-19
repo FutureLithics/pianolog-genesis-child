@@ -31,6 +31,7 @@ remove_action( 'genesis_before_header', 'genesis_skip_links', 5 );
 require_once get_stylesheet_directory() . '/includes/class-pianolog-megamenu-walker.php';
 require_once get_stylesheet_directory() . '/includes/class-pianolog-mobile-walker.php';
 require_once get_stylesheet_directory() . '/includes/class-pianolog-email-signup-widget.php';
+require_once get_stylesheet_directory() . '/includes/class-pianolog-top-categories-widget.php';
 /**
  * Theme setup.
  */
@@ -604,14 +605,14 @@ add_action( 'genesis_footer', function () {
 /**
  * Widget: Top-level Categories
  */
-class Pianolog_Top_Categories_Widget extends WP_Widget {
+/* moved */ class Pianolog_Top_Categories_Widget_DISABLED extends WP_Widget {
 	public function __construct() {
 		parent::__construct(
 			'pianolog_top_categories',
 			__( 'Pianolog: Top‑level Categories', 'pianolog-genesis-child' ),
 			array(
 				'classname'   => 'widget_pianolog_top_categories',
-				'description' => __( 'Displays links to top‑level (parent = 0) post categories.', 'pianolog-genesis-child' ),
+				'description' => __( 'Displays links to categories: either top‑level or children of a selected parent.', 'pianolog-genesis-child' ),
 			)
 		);
 	}
@@ -626,11 +627,13 @@ class Pianolog_Top_Categories_Widget extends WP_Widget {
 		$title = ! empty( $instance['title'] ) ? $instance['title'] : __( 'Categories', 'pianolog-genesis-child' );
 		$title = apply_filters( 'widget_title', $title, $instance, $this->id_base );
 
+		$parent_id = isset( $instance['parent_category'] ) ? absint( $instance['parent_category'] ) : 0;
+
 		$terms = get_terms(
 			array(
 				'taxonomy'   => 'category',
 				'hide_empty' => true,
-				'parent'     => 0,
+				'parent'     => $parent_id, // 0 for top-level, otherwise children of selected parent.
 				'orderby'    => 'name',
 				'order'      => 'ASC',
 			)
@@ -670,6 +673,7 @@ class Pianolog_Top_Categories_Widget extends WP_Widget {
 	 */
 	public function form( $instance ) {
 		$title = isset( $instance['title'] ) ? $instance['title'] : __( 'Categories', 'pianolog-genesis-child' );
+		$parent_category = isset( $instance['parent_category'] ) ? absint( $instance['parent_category'] ) : 0;
 		$field_id   = $this->get_field_id( 'title' );
 		$field_name = $this->get_field_name( 'title' );
 		?>
@@ -677,8 +681,28 @@ class Pianolog_Top_Categories_Widget extends WP_Widget {
 			<label for="<?php echo esc_attr( $field_id ); ?>"><?php esc_html_e( 'Title:', 'pianolog-genesis-child' ); ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $field_id ); ?>" name="<?php echo esc_attr( $field_name ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'parent_category' ) ); ?>"><?php esc_html_e( 'Parent Category (optional):', 'pianolog-genesis-child' ); ?></label>
+			<?php
+			wp_dropdown_categories(
+				array(
+					'taxonomy'           => 'category',
+					'hide_empty'         => false,
+					'name'               => esc_attr( $this->get_field_name( 'parent_category' ) ),
+					'id'                 => esc_attr( $this->get_field_id( 'parent_category' ) ),
+					'show_option_none'   => __( '— Top‑level (no parent) —', 'pianolog-genesis-child' ),
+					'option_none_value'  => '0',
+					'selected'           => $parent_category,
+					'orderby'            => 'name',
+					'order'              => 'ASC',
+				)
+			);
+			?>
+			<small><?php esc_html_e( 'Leave as “Top‑level” to list top categories. Choose a parent to list only its direct children.', 'pianolog-genesis-child' ); ?></small>
+		</p>
 		<?php
 	}
+
 
 	/**
 	 * Sanitize and save widget form values.
@@ -691,6 +715,7 @@ class Pianolog_Top_Categories_Widget extends WP_Widget {
 	public function update( $new_instance, $old_instance ) {
 		$instance          = array();
 		$instance['title'] = isset( $new_instance['title'] ) ? sanitize_text_field( $new_instance['title'] ) : '';
+		$instance['parent_category'] = isset( $new_instance['parent_category'] ) ? absint( $new_instance['parent_category'] ) : 0;
 		return $instance;
 	}
 }

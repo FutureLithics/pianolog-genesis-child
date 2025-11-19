@@ -50,6 +50,13 @@ add_action( 'genesis_loop', function () {
 								}
 								?>
 							</div>
+							<div class="affiliate-disclaimer">
+								<i class="bi bi-info-circle mr-1"></i>
+								<span>
+									<strong> This page contains affiliate links.</strong> If you buy through them, I may earn a commission at no extra cost to you.								
+								</span>
+							</div>
+							
 							<?php the_content(); ?>
 							<?php
 							$tags = get_the_tags();

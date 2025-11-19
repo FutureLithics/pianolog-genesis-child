@@ -92,7 +92,7 @@ function pianolog_front_page_content() {
 			</div>
 		</section>
 
-		<?php echo do_shortcode('[pianolog_posts_section posts="6" category="gear-reviews" title="Gear Reviews" cta_text="View all gear reviews" background="manuscript"]'); ?>
+		<?php echo do_shortcode('[pianolog_posts_section posts="6" category="reviews" title="Recent Reviews" cta_text="View More Reviews" background="manuscript"]'); ?>
 
 		<section class="cta py-5" style="background: var(--color-coal);">
 			<div class="container text-center">
