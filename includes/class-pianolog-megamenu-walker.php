@@ -43,7 +43,7 @@ if ( ! class_exists( 'Pianolog_Megamenu_Walker' ) && class_exists( 'Walker_Nav_M
 					$children = array();
 
 					if ( ! empty( $specified_slugs ) ) {
-						// Fetch specific top-level categories by slug.
+						// Fetch specific categories by slug (allowing non–top-level terms).
 						$maybe_terms = get_terms(
 							array(
 								'taxonomy'   => 'category',
@@ -55,22 +55,15 @@ if ( ! class_exists( 'Pianolog_Megamenu_Walker' ) && class_exists( 'Walker_Nav_M
 							// Build map by slug to preserve the order provided in $specified_slugs.
 							$by_slug = array();
 							foreach ( $maybe_terms as $t ) {
-								if ( (int) $t->parent === 0 ) {
-									$by_slug[ $t->slug ] = $t;
-								}
+								$by_slug[ $t->slug ] = $t;
 							}
-							// Push terms in the order of $specified_slugs.
+							// Push only the specified terms in the order provided.
 							foreach ( $specified_slugs as $slug ) {
 								if ( isset( $by_slug[ $slug ] ) ) {
 									$children[] = $by_slug[ $slug ];
 								}
 							}
-							// Append any remaining top-level terms not explicitly ordered.
-							foreach ( $maybe_terms as $t ) {
-								if ( (int) $t->parent === 0 && ! in_array( $t, $children, true ) ) {
-									$children[] = $t;
-								}
-							}
+							// Do not append unrelated top-level terms; honor only specified slugs.
 						}
 					}
 
