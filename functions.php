@@ -819,3 +819,19 @@ add_action( 'wp_enqueue_scripts', function () {
 
 
 add_filter('pianolog_brevo_api_key', fn() => defined('PIANOLOG_BREVO_API_KEY') ? PIANOLOG_BREVO_API_KEY : '');
+
+/**
+ * Shortcode: [site_logo]
+ * Outputs the Customizer "Site Logo" markup.
+ */
+function pianolog_site_logo_shortcode() {
+	// get_custom_logo() returns HTML or empty if no logo set.
+	if ( function_exists( 'get_custom_logo' ) ) {
+		$logo = get_custom_logo();
+		if ( is_string( $logo ) && $logo !== '' ) {
+			return $logo;
+		}
+	}
+	return '';
+}
+add_shortcode( 'site_logo', 'pianolog_site_logo_shortcode' );
