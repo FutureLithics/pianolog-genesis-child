@@ -1646,3 +1646,67 @@ h1:not(.site-title) { font-size: 48px; }
 	border-radius: 5px;
 	color: #1a1a1a;
 }
+
+.widget.widget_pianolog_featured_product {
+	margin-bottom: 32px;
+}
+
+.pianolog-featured-product {
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.pianolog-featured-product__eyebrow {
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--color-accent-warm);
+}
+
+.pianolog-featured-product__image-wrap {
+	display: block;
+	text-align: center;
+}
+
+.pianolog-featured-product__image {
+	margin: 0 auto;
+}
+
+.pianolog-featured-product__price {
+	font-size: 20px;
+	font-weight: 600;
+	color: var(--color-text-primary);
+}
+
+.pianolog-featured-product__excerpt {
+	font-size: 15px;
+	color: var(--color-text-muted);
+	margin: 0;
+}
+
+.pianolog-featured-product__button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.65rem 1.5rem;
+	border-radius: 999px;
+	border: 1px solid var(--color-accent-warm);
+	background: var(--color-accent-warm);
+	color: #fff;
+	font-weight: 600;
+	text-decoration: none;
+	transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+.pianolog-featured-product__button:hover,
+.pianolog-featured-product__button:focus {
+	background: var(--color-copper);
+	border-color: var(--color-copper);
+	color: #fff;
+	transform: translateY(-1px);
+	text-decoration: none;
+}

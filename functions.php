@@ -32,6 +32,7 @@ require_once get_stylesheet_directory() . '/includes/class-pianolog-megamenu-wal
 require_once get_stylesheet_directory() . '/includes/class-pianolog-mobile-walker.php';
 require_once get_stylesheet_directory() . '/includes/class-pianolog-email-signup-widget.php';
 require_once get_stylesheet_directory() . '/includes/class-pianolog-top-categories-widget.php';
+require_once get_stylesheet_directory() . '/includes/class-pianolog-featured-product-widget.php';
 /**
  * Theme setup.
  */
@@ -606,6 +607,12 @@ add_action(
 	'widgets_init',
 	function () {
 		register_widget( 'Pianolog_Top_Categories_Widget' );
+	}
+);
+add_action(
+	'widgets_init',
+	function () {
+		register_widget( 'Pianolog_Featured_Product_Widget' );
 	}
 );
 /**
