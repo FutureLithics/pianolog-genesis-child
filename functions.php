@@ -145,7 +145,7 @@ function pianolog_do_custom_header() {
 
 add_filter( 'pianolog_megamenu_slugs', function( $slugs, $item, $args ) {
 	// Return array of slugs like ['news','events']
-	return array( 'gear-reviews', 'software-reviews', 'course-reviews' );
+	return array( 'gear-reviews', 'software-reviews', 'course-reviews', 'book-reviews' );
 }, 10, 3 );
 
 /**
@@ -835,3 +835,5 @@ function pianolog_site_logo_shortcode() {
 	return '';
 }
 add_shortcode( 'site_logo', 'pianolog_site_logo_shortcode' );
+
+add_post_type_support('post', 'custom-fields');

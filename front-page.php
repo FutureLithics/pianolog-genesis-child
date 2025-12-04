@@ -42,8 +42,8 @@ function pianolog_front_page_content() {
 					<?php echo esc_html__( 'A curated library of studies, tools, and reviews for anyone learning the piano or seeking to move beyond playing into composing and producing.', 'pianolog-genesis-child' ); ?>
 				</p>
         <div class="hero__actions pt-3">
-          <a href="#posts-grid-gear-reviews" class="btn-hero-cta u-soft-border px-3 py-2">
-						<?php echo esc_html__( 'Explore Gear Reviews', 'pianolog-genesis-child' ); ?>
+          <a href="#posts-grid-reviews" class="btn-hero-cta u-soft-border px-3 py-2">
+						<?php echo esc_html__( 'Explore Reviews', 'pianolog-genesis-child' ); ?>
 					</a>
 				</div>
 			</div>
@@ -91,7 +91,8 @@ function pianolog_front_page_content() {
 				</div>
 			</div>
 		</section>
-
+		
+		
 		<?php echo do_shortcode('[pianolog_posts_section posts="6" category="reviews" title="Recent Reviews" cta_text="View More Reviews" background="manuscript"]'); ?>
 
 		<section class="cta py-5" style="background: var(--color-coal);">
