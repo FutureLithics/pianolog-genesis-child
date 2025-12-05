@@ -87,6 +87,24 @@ function pianolog_child_setup() {
 		)
 	);
 
+	// WooCommerce integration (prevents fallback styles/wrappers).
+	add_theme_support(
+		'woocommerce',
+		array(
+			'thumbnail_image_width' => 500,
+			'single_image_width'    => 900,
+			'product_grid'          => array(
+				'default_rows'    => 3,
+				'min_rows'        => 1,
+				'default_columns' => 3,
+				'min_columns'     => 1,
+			),
+		)
+	);
+	add_theme_support( 'wc-product-gallery-zoom' );
+	add_theme_support( 'wc-product-gallery-lightbox' );
+	add_theme_support( 'wc-product-gallery-slider' );
+
 	// Genesis widget areas and layout options.
 	add_theme_support( 'genesis-after-entry-widget-area' );
 	add_theme_support( 'genesis-footer-widgets', 3 );

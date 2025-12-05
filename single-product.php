@@ -39,7 +39,13 @@ add_action(
 					<div class="col-9">
 						<article <?php post_class( 'single-article' ); ?>>
 							<div class="single-content">
-								<?php the_content(); ?>
+								<?php
+								if ( class_exists( 'WooCommerce' ) && 'product' === get_post_type() ) {
+									wc_get_template_part( 'content', 'single-product' );
+								} else {
+									the_content();
+								}
+								?>
 								<?php
 								$tags = get_the_tags();
 								if ( $tags ) :
@@ -58,11 +64,6 @@ add_action(
 								?>
 							</div>
 						</article>
-						<?php if ( comments_open() || get_comments_number() ) : ?>
-							<div class="single-comments mt-3">
-								<?php comments_template(); ?>
-							</div>
-						<?php endif; ?>
 					</div>
 					<aside class="col-3 single-sidebar">
 						<?php

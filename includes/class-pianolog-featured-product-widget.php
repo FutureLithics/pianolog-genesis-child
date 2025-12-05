@@ -45,7 +45,22 @@ if ( ! class_exists( 'Pianolog_Featured_Product_Widget' ) && class_exists( 'WP_W
 			$highlight      = isset( $instance['highlight_label'] ) ? $instance['highlight_label'] : '';
 			$button_text    = isset( $instance['button_text'] ) && $instance['button_text'] !== '' ? $instance['button_text'] : __( 'View Product', 'pianolog-genesis-child' );
 			$permalink      = get_permalink( $product_post );
-			$thumb_html     = get_the_post_thumbnail( $product_post, 'medium', array( 'class' => 'pianolog-featured-product__image' ) );
+			$restore_wc_filter = false;
+			if (
+				function_exists( 'is_product' )
+				&& is_product()
+				&& class_exists( 'WC_Template_Loader' )
+				&& has_filter( 'post_thumbnail_html', array( 'WC_Template_Loader', 'unsupported_theme_single_featured_image_filter' ) )
+			) {
+				remove_filter( 'post_thumbnail_html', array( 'WC_Template_Loader', 'unsupported_theme_single_featured_image_filter' ) );
+				$restore_wc_filter = true;
+			}
+
+			$thumb_html = get_the_post_thumbnail( $product_post, 'medium', array( 'class' => 'pianolog-featured-product__image' ) );
+
+			if ( $restore_wc_filter ) {
+				add_filter( 'post_thumbnail_html', array( 'WC_Template_Loader', 'unsupported_theme_single_featured_image_filter' ) );
+			}
 			$excerpt_source = $product_post->post_excerpt ? $product_post->post_excerpt : wp_strip_all_tags( $product_post->post_content );
 			$excerpt        = $excerpt_source ? wp_trim_words( $excerpt_source, 25 ) : '';
 
