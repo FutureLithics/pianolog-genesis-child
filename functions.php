@@ -862,3 +862,20 @@ function pianolog_site_logo_shortcode() {
 add_shortcode( 'site_logo', 'pianolog_site_logo_shortcode' );
 
 add_post_type_support('post', 'custom-fields');
+
+
+function fm_remove_unused_scripts() {
+    // Example: Remove Contact Form 7 scripts sitewide except on the contact page
+    if ( ! is_page( 'contact-us' ) ) {
+        wp_dequeue_script( 'contact-form-7' );
+        wp_dequeue_style( 'contact-form-7' );
+    }
+
+    // Remove WooCommerce assets on non-WC pages
+    if ( ! is_woocommerce() && ! is_cart() && ! is_checkout() ) {
+        wp_dequeue_script( 'wc-add-to-cart' );
+        wp_dequeue_script( 'woocommerce' );
+        wp_dequeue_style( 'woocommerce-general' );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'fm_remove_unused_scripts', 99 );

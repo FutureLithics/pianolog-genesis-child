@@ -5,6 +5,13 @@
   var drawer = doc.getElementById('mobile-menu');
   var overlay = doc.querySelector('[data-mobile-menu-overlay]');
   var closeBtn = doc.querySelector('.mobile-menu__close');
+	
+	const menuCart = document.getElementsByClassName('menu-cart')[0];
+	console.log(menuCart, 'menuCart')
+	if (menuCart) {
+		
+		menuCart.innerHTML = '<i class="bi bi-cart"></i>';
+	}
 
   if (!toggle || !drawer) return;
 

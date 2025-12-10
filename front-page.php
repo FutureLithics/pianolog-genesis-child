@@ -20,7 +20,11 @@ add_action( 'genesis_loop', 'pianolog_front_page_content' );
  */
 function pianolog_front_page_content() {
 	$front_id = get_queried_object_id();
-	$hero_url = $front_id ? get_the_post_thumbnail_url( $front_id, 'full' ) : '';
+	
+	$hero_small  = get_the_post_thumbnail_url( $front_id, 'medium' );
+	$hero_medium = get_the_post_thumbnail_url( $front_id, 'large' );
+	$hero_large  = get_the_post_thumbnail_url( $front_id, 'full' );
+	
 	$uploads  = wp_get_upload_dir();
 	$uploads_base = isset( $uploads['baseurl'] ) ? $uploads['baseurl'] : '';
 	$glyph_01 = $uploads_base ? $uploads_base . '/2025/11/Glyphs-01.png' : '';
@@ -30,8 +34,16 @@ function pianolog_front_page_content() {
 	?>
 	<main class="front-page">
 		<section class="hero py-5">
-			<?php if ( $hero_url ) : ?>
-				<div class="hero__bg" style="<?php echo 'background-image:url(' . esc_url( $hero_url ) . ');'; ?>"></div>
+			<?php if ( $hero_medium ) : ?>
+				<div 
+					class="hero__bg" 
+					style="
+						--bg-small: url('<?php echo esc_url( $hero_small ); ?>');
+						--bg-medium: url('<?php echo esc_url( $hero_medium ); ?>');
+						--bg-large: url('<?php echo esc_url( $hero_large ); ?>');
+						background-image: var(--bg-medium);
+					">
+				</div>
 			<?php endif; ?>
 			<div class="container text-center flex flex-col items-center justify-center h-100 gap-4">
 				<h1 class="hero__title text-white mb-0">
